@@ -1,0 +1,51 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    {%for listing in listings%}
+    <div class="container">
+        
+        {% if listing.status %}
+        <div class="card flex-row flex-wrap my-2 py-2">
+            <div class="card-header border-0">
+                <img src="{{listing.img_url}}" alt="" width="100px" height="120px">
+            </div>
+            <div class="card-block px-2">
+                <p><a href="{%url 'shows' listing.id %}">{{listing.item_name}}</a></p>
+                <p> current bid: ${{listing.price.bid}} by {{listing.price.user}}</p>
+
+                <a href="{%url 'shows' listing.id%}" class="btn btn-primary">make a bid</a>
+                <a href="{%url 'removeWatchlist' listing.id%}" class="btn btn-danger" >remove watchlist</a>
+            </div>
+        </div>
+        {%else%}
+            {%if listing.price.user == request.user%}
+                <div class="card flex-row flex-wrap bg-success-subtle my-2 py-2">
+                    <div class="card-header border-0">
+                        <img src="{{listing.img_url}}" alt="" width="100px" height="120px">
+                    </div>
+                    <div class="card-block px-2">
+                        <p><a href="{%url 'shows' listing.id %}">{{listing.item_name}}</a></p>
+                        <p> current bid: ${{listing.price.bid}} by {{listing.price.user}}</p>
+                        <p><strong>SOLD</strong></p>
+                        <a href="{%url 'removeWatchlist' listing.id%}" class="btn btn-danger">remove watchlist</a>
+                    </div>
+                </div>
+            {%else%}
+                <div class="card flex-row flex-wrap bg-danger-subtle my-2 py-2">
+                    <div class="card-header border-0">
+                        <img src="{{listing.img_url}}" alt="" width="100px" height="120px">
+                    </div>
+                    <div class="card-block px-2">
+                        <p><a href="{%url 'shows' listing.id %}"> {{listing.item_name}}</a></p>
+                        <p> current bid: ${{listing.price.bid}} by {{listing.price.user}}</p>
+                        <p><strong>SOLD</strong></p>
+                        <a href="{%url 'removeWatchlist' listing.id%}" class="btn btn-danger">remove watchlist</a>
+                    </div>
+                </div>
+            {%endif%}
+
+        {%endif%}
+    </div>
+    {% endfor %}
+{% endblock %}

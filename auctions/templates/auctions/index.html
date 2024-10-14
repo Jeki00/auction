@@ -1,0 +1,40 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+
+    <!-- TODO -->
+    <div class="container">
+        <div class="row">
+                {% for listing in listings%}
+                {%if listing.status == False%}
+                    <div class="card my-3 mx-3 bg-danger-subtle px-3 py-3" style="width: 18rem; ">
+                        <img src="{{ listing.img_url }}" alt="{{ listing.img_url }}" width="250px" height="250px">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <p><a href="{% url 'shows' listing.id %}"><strike>{{listing.item_name }}</strike></a> SOLD </p>
+                            </h5>
+                            <p class="card-text">{{ listing.description }} </p>
+                            <p class="card-text"> price : ${{ listing.price.bid }}</p>
+        
+                            <p class="card-text">by {{ listing.user }} on {{listing.price.time}}</p>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="card my-3 mx-3 px-3 py-3" style="width: 18rem;">
+                        <img src="{{ listing.img_url }}" alt="{{ listing.img_url }} ">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{% url 'shows' listing.id %}">{{ listing.item_name }}</a>
+                            </h5>
+                            <p class="card-text">{{ listing.description }} </p>
+                            <p class="card-text"> price : ${{ listing.price.bid }}</p>
+        
+                            <p class="card-text">by {{ listing.user }} on {{listing.price.time}}</p>
+                        </div>
+                    </div>
+                {%endif%}
+                {% endfor %}
+            </div>
+        </div>
+{% endblock %}

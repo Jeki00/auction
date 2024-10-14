@@ -1,0 +1,78 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+
+<div class="container">
+
+    <h2>{{listing.item_name}}</h2>
+    {% if request.user in watchlists %}
+    <a href="{%url 'removeWatchlist' listing.id%}" class="btn btn-danger">remove from Watchlist</a><br>
+    {% else %}
+    <a href="{%url 'addWatchlist' listing.id%}" class="btn btn-primary">Add to Watchlist</a><br>
+    {% endif %}
+
+    {% if request.user ==  listing.price.user%}
+        <div class="alert alert-success my-2">
+            <p>You won this auction</p>
+        </div>
+    {% else %}
+        <div class="alert alert-warning my-2">
+            <p>The auction for this item was won by {{listing.price.user}}</p>
+        </div>
+    
+    {% endif %}
+
+
+    <img src="{{listing.img_url}}" alt="{{listing.item_name }}">
+    <p> by: {{listing.user }}</p>
+    <p>Description: {{listing.description}}</p>
+
+
+    <h4>Bid</h4>
+    <h4>${{listing.price.bid}}</h4>
+    
+
+
+    {% if request.user != listing.user and user.is_authenticated and listing.status == True%}
+    <form action="{% url 'addBid' listing.id%}" method="post">
+        {% csrf_token %}
+        <input type="number" placeholder="enter your bid" class="form-control mb-2" name="bid_price">
+        <button type="submit" class="btn btn-success">Bid</button>
+    </form>
+        {%if error_message %}
+        <div class="alert alert-danger">
+            {{error_message}}
+        </div>
+        {% endif%}
+
+    {% endif%}
+
+    <h3>Comment</h3>
+
+
+    {%if error_comment %}
+        <div class="alert alert-danger">
+            {{error_comment}}
+        </div>
+    {% endif%}
+    {% if user.is_authenticated and listing.status == True %}
+    <form action="{% url 'addComment' listing.id%}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <textarea name="comment" id="" cols="10" rows="5" class="form-control"> </textarea>
+        </div>
+        <button type="submit" class="btn btn-success">post comment</button>
+    </form>
+    {%endif%}
+
+    {% for comment in comments%}
+    <div class="border border-black mt-3 px-3">
+        <p>{{comment.comment}} </p>
+        <p> by {{comment.user}} </p>
+    </div>
+    
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<a href="{% url 'addListing' %}" class="btn btn-success"> create new listing</a>
+
+<div class="container">
+        {%for listing in listings%}
+        <div class="card flex-row flex-wrap my-2">
+            <div class="card-header border-0">
+                <img src="{{listing.img_url}}" alt="" width="100px" height="120px">
+            </div>
+            <div class="card-block px-2">
+                <p>{{listing.item_name}}</p>
+                <p> current bid: ${{listing.price.bid}} by {{listing.price.user}}</p>
+
+                {% if listing.status%}
+                <a href="{% url 'closeBid' listing.id%}" class="btn btn-danger my-1">close this bid</a>
+                {%endif%}
+            </div>
+        </div>
+        {% endfor %}
+</div>
+{% endblock %}

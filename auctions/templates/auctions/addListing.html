@@ -1,0 +1,41 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <div class="container">
+        <h2>Auction</h2>
+
+        <a href="{% url 'listing' %}" class="btn btn-danger"><< Back</a>
+    
+        <!-- TODO -->
+        <form action="{% url 'addListing' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="item_name">Item name</label><br>
+                <input type="text" class="form-control" name="item_name" required>
+            
+                <label for="description">Description</label><br>
+                <textarea name="description" class="form-control" id="" cols="30" rows="10" required></textarea>
+
+                <label for="category">Category</label>
+                <select name="category" id="category" class="form-control">
+                    {% for category in categories%}
+                    <option value="{{ category }}">{{category}}</option>
+                    {% endfor %}
+                </select>
+            
+                <label for="price"> Price</label><br>
+                <input type="number" class="form-control" name="price" placeholder="price" required>
+
+                {%if error_price %}
+                <div class="alert alert-danger">{{error_price}}</div>
+                {%endif%}
+            
+                <label for="imageurl">Image URL</label>
+                <input type="text" name="imageurl" class="form-control" id="imageurl" placeholder="Image URL" required>
+
+            </div>
+            <button type="submit" class="btn btn-success my-2">Sell</button>
+        </form>
+
+    </div>
+{% endblock %}
